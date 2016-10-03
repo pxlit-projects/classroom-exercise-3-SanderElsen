@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 
 import static be.pxl.mockitis.RaidersTestBuilder.aRaiders;
 import static be.pxl.mockitis.SettlementTestBuilder.aSettlement;
+import static be.pxl.mockitis.SettlerTestBuilder.aSettler;
 @RunWith(MockitoJUnitRunner.class)
 public class SettlementTest {
 
@@ -22,12 +23,27 @@ public class SettlementTest {
                 .withRaiders(1)
                 .build();
 
-        Settlement settlement = aSettlement()
-                .withDefenders(1)
-                .withNonDefenders(2)
+        Settler defender = aSettler()
+                .withState(Settler.SettlerState.DEFENDER)
                 .build();
 
-        assertThat(settlement.defend(raiders)).isTrue();
+        Settler farmer = aSettler()
+                .withState(Settler.SettlerState.DEFENDER)
+                .build();
+
+        Settler clerk = aSettler()
+                .withState(Settler.SettlerState.WORKER)
+                .build();
+
+        List<Settler> settlers = Arrays.asList(defender,farmer,clerk);
+
+        Settlement settlement = aSettlement()
+                .withSettlers(settlers)
+                .build();
+
+        settlement.defend(raiders);
+
+        assertThat(settlement.getAlivePopulation()>0).isTrue();
     }
 
     @Test
@@ -36,12 +52,27 @@ public class SettlementTest {
                 .withRaiders(2)
                 .build();
 
-        Settlement settlement = aSettlement()
-                .withDefenders(2)
-                .withNonDefenders(1)
+        Settler defender = aSettler()
+                .withState(Settler.SettlerState.DEFENDER)
                 .build();
 
-        assertThat(settlement.defend(raiders)).isTrue();
+        Settler farmer = aSettler()
+                .withState(Settler.SettlerState.DEFENDER)
+                .build();
+
+        Settler clerk = aSettler()
+                .withState(Settler.SettlerState.WORKER)
+                .build();
+
+        List<Settler> settlers = Arrays.asList(defender,farmer,clerk);
+
+        Settlement settlement = aSettlement()
+                .withSettlers(settlers)
+                .build();
+
+        settlement.defend(raiders);
+
+        assertThat(settlement.getAlivePopulation()>0).isTrue();
     }
 
     @Test
@@ -51,10 +82,26 @@ public class SettlementTest {
                 .build();
 
 
-        Settlement settlement = aSettlement()
-                .withDefenders(1)
-                .withNonDefenders(2)
+        Settler defender = aSettler()
+                .withState(Settler.SettlerState.DEFENDER)
                 .build();
-        assertThat(settlement.defend(raiders)).isFalse();
+
+        Settler farmer = aSettler()
+                .withState(Settler.SettlerState.WORKER)
+                .build();
+
+        Settler clerk = aSettler()
+                .withState(Settler.SettlerState.WORKER)
+                .build();
+
+        List<Settler> settlers = Arrays.asList(defender,farmer,clerk);
+
+        Settlement settlement = aSettlement()
+                .withSettlers(settlers)
+                .build();
+
+        settlement.defend(raiders);
+
+        assertThat(settlement.getAlivePopulation()==0).isTrue();
     }
 }

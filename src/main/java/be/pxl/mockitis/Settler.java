@@ -1,13 +1,17 @@
 package be.pxl.mockitis;
 
 public class Settler {
-    private boolean assignedToDefense;
+    private SettlerState state;
 
-    public Settler(boolean assignedToDefense) {
-        this.assignedToDefense = assignedToDefense;
+    public Settler(SettlerState state) {
+        this.state = state;
     }
+    public void kill(){
+        state=SettlerState.DEAD;
+    }
+    public SettlerState getState(){return state;}
 
-    public boolean isAssignedToDefense() {
-        return assignedToDefense;
+    public enum  SettlerState{
+        DEFENDER,WORKER,DEAD
     }
 }
